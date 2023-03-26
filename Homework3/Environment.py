@@ -32,7 +32,7 @@ class Environment():
             plt.figure(figsize=(6, 6))    
             plt.imshow(self.environ) 
             ax = plt.gca()   
-            
+
             # loop over each animal
             temp_agents = []
             temp_hunted_agents = []
@@ -50,13 +50,14 @@ class Environment():
                         temp_new_agents = agent.procreate(dt, self.animal_agents)
                         if len(temp_new_agents) > 0:
                             temp_agents.extend(temp_new_agents)
-                else:
+                elif agent.ptype == "Predator":
                     caught_prey = agent.hunt(self.animal_agents)
                     if caught_prey:
                         temp_hunted_agents.append(caught_prey)
-
+                    temp_agents.append(agent)
+            
             for agent in temp_hunted_agents:
-                temp_agents.remove(agent)        
+                temp_agents.remove(agent)
             self.animal_agents.clear
             self.animal_agents = temp_agents
             plt.xlim(0,self.xsize)
@@ -106,7 +107,7 @@ class Environment():
                 elif agent.color == "saddlebrown":
                     self.dark_brown_animals[-1] += 1
 
-        plt.plot(self.times,self.light_brown_animals,label="Light Brown")   
-        plt.plot(self.times,self.dark_brown_animals,label="Dark Brown")
+        plt.plot(self.times,self.light_brown_animals,label="Light Brown",color='goldenrod')   
+        plt.plot(self.times,self.dark_brown_animals,label="Dark Brown",color='saddlebrown')
         plt.legend(loc="best")
         plt.show()  

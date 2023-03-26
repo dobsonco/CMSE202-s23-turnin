@@ -62,9 +62,8 @@ class Animal_Agent():
             self.y -= dy
         else:
             self.y += dy
-        # print(self.x,self.y)
 
-    def set_allele(self, alle_d, alle_m):
+    def set_allele(self, alle_d=True, alle_m=True):
         '''
         Method to set the alleles of this mouse: alle_d and alle_m from dad and mom, respectively.
         The values is either 0 or 1 for each allele. 
@@ -74,9 +73,15 @@ class Animal_Agent():
         type1 ==> (0,1) or (1,0): 1 = 0 + 1 = 1 + 0; dominant, light color
         type2 ==> (1,1): 2 = 1 + 1; dominant, light color
         '''
-        
-        self.alle_d = alle_d
-        self.alle_m = alle_m
+        if alle_d:
+            self.alle_d = random.uniform(0,1.5)
+        else:
+            self.alle_d = alle_d
+
+        if alle_m:
+            self.alle_m = random.uniform(0,1.5)
+        else:
+            self.alle_m = alle_m
         
         # Here we set light animal color to be dominant.
         if self.alle_d + self.alle_m >= 1:
@@ -85,6 +90,7 @@ class Animal_Agent():
             
         else:
             self.color = "saddlebrown" 
+            self.catch_probability = 0.05
 
 
     def draw(self,ax):
@@ -122,7 +128,6 @@ class Animal_Agent():
         Method for a predator to find prey. If the predator finds prey, the method sets the is_caught flag 
         and returns the prey object so it can be removed from the environment. 
 
-
         all_agents (list): A list of all of the animal agent objects 
         '''
         for agent in all_agents:
@@ -132,7 +137,7 @@ class Animal_Agent():
                     return agent       
         return False
     
-    def procreate(self,all_agents,time):
+    def procreate(self,time,all_agents):
         '''
         Method to create new agents (procreate). There are three barriers to procreation:
         1. Has it been enough time between the last procreation? (I.e., more than the gestation time.)
@@ -168,5 +173,15 @@ class Animal_Agent():
                     break
 
         return child_list
-
-
+    
+    def get_sex(self):
+        return self.sex
+    
+    def get_allele(self):
+        return {'m':self.alle_m,'d':self.alle_d,'sum':self.alle_d+self.alle_m}
+    
+    def get_type(self):
+        return self.ptype
+    
+    def get_color(self):
+        return self.color
